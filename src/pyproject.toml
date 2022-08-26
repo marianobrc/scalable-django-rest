@@ -7,8 +7,10 @@ authors = ["marianobrc <marianomartinez84@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "^4.1"
+django-silk = "^5.0.1"
 
 [tool.poetry.dev-dependencies]
+black = "^22.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
