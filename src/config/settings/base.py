@@ -39,7 +39,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
-
+    'silk',
 ]
 
 LOCAL_APPS = [
