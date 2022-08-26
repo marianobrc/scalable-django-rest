@@ -40,6 +40,8 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'storages',  # Store files in S3
+    'rest_framework',  # REST APIs
+    'rest_framework.authtoken',  # API Authentication
     'silk',
 ]
 
@@ -159,3 +161,23 @@ AWS_ACCOUNT_ID = os.getenv("AWS_ACCOUNT_ID", "000000000000")
 AWS_REGION_NAME = os.getenv("AWS_REGION_NAME", "us-east-1")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "FAKEABCDEFGHIJKLMNOP")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "FAKE7NiynG+TogH8Nj+P9nlE73sq3")
+
+
+#########################
+# Django REST Framework #
+#########################
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 40,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "60/hour", "user": "1000/hour"},
+}

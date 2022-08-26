@@ -9,6 +9,9 @@ python = "^3.10"
 Django = "^4.1"
 django-silk = "^5.0.1"
 django-storages = "^1.13.1"
+djangorestframework = "^3.13.1"
+Markdown = "^3.4.1"
+django-filter = "^22.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
