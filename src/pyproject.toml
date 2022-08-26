@@ -8,6 +8,7 @@ authors = ["marianobrc <marianomartinez84@gmail.com>"]
 python = "^3.10"
 Django = "^4.1"
 django-silk = "^5.0.1"
+django-storages = "^1.13.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

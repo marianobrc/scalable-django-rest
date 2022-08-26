@@ -39,6 +39,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
+    'storages',  # Store files in S3
     'silk',
 ]
 
