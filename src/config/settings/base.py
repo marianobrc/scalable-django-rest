@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from distutils.util import strtobool
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -181,3 +183,29 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_THROTTLE_RATES": {"anon": "60/hour", "user": "1000/hour"},
 }
+
+
+# Celery settings
+# Check celery good practices: https://denibertovic.com/posts/celery-best-practices/
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "sqs://broker:9324")
+# Pass only json serializable arguments to tasks
+CELERY_TASK_SERIALIZER = "json"
+# We ignore the celery task "result" as we don't need it.
+# We keep track of status and/or results in our own DB models as necessary.
+CELERY_TASK_IGNORE_RESULT = True
+# Queues and routes for celery tasks
+CELERY_TASK_DEFAULT_QUEUE = "default"
+SQS_DEFAULT_QUEUE_URL = f"http://broker:9324/000000000000/{CELERY_TASK_DEFAULT_QUEUE}"
+CELERY_BROKER_TRANSPORT = "sqs"
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    "region": AWS_REGION_NAME,
+    "visibility_timeout": 3600,
+    "polling_interval": 5,
+    'predefined_queues': {  # We use an SQS queue created previously with CDK
+        CELERY_TASK_DEFAULT_QUEUE: {
+            'url': SQS_DEFAULT_QUEUE_URL  # Important: Set the queue URL with https:// here when using VPC endpoints
+        }
+    }
+}
+# This setting makes the tasks to run synchronously. Useful for local debugging and CI tests.
+CELERY_TASK_ALWAYS_EAGER = strtobool(os.getenv("CELERY_TASK_ALWAYS_EAGER", "False"))
