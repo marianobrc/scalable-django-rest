@@ -12,6 +12,10 @@ django-storages = "^1.13.1"
 djangorestframework = "^3.13.1"
 Markdown = "^3.4.1"
 django-filter = "^22.1"
+pycurl = "*"
+boto3 = "*"
+celery = { extras = ["sqs"], version = "~5.2" }
+kombu = { extras = ["sqs"], version = "^5.2" }
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
