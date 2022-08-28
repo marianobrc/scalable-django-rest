@@ -1,0 +1,7 @@
+.coveragerc
+.env
+.venv
+.pylintrc
+.git
+.pid
+.log
