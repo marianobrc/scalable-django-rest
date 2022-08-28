@@ -16,6 +16,7 @@ pycurl = "*"
 boto3 = "*"
 celery = { extras = ["sqs"], version = "~5.2" }
 kombu = { extras = ["sqs"], version = "^5.2" }
+psycopg2 = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
