@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     'storages',  # Store files in S3
     'rest_framework',  # REST APIs
     'rest_framework.authtoken',  # API Authentication
+    'dj_rest_auth',
     'silk',
 ]
 
@@ -178,6 +179,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_THROTTLE_CLASSES": [
