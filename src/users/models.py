@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
+from model_utils.models import UUIDModel
 
 
 class CustomUserManager(BaseUserManager):
@@ -35,7 +36,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class User(UUIDModel, AbstractUser):
     username = None  # Remove the username field
     email = models.EmailField(_('email address'), unique=True)  # Email is the new unique user identifier
 
