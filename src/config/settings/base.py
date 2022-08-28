@@ -177,9 +177,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 40,
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_THROTTLE_CLASSES": [
@@ -191,7 +191,7 @@ REST_FRAMEWORK = {
 
 # dj-rest-auth settings
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = "jwt"
+JWT_AUTH_COOKIE = "jwt-auth"
 JWT_AUTH_REFRESH_COOKIE = "jwt-refresh"
 
 # Celery settings
