@@ -43,8 +43,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'storages',  # Store files in S3
     'rest_framework',  # REST APIs
-    'rest_framework.authtoken',  # API Authentication
-    'dj_rest_auth',
+    'rest_framework.authtoken',  # API toaken Authentication
+    'dj_rest_auth',  # Login / Logout using JWT
     'silk',
 ]
 
@@ -189,6 +189,10 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"anon": "60/hour", "user": "1000/hour"},
 }
 
+# dj-rest-auth settings
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = "jwt"
+JWT_AUTH_REFRESH_COOKIE = "jwt-refresh"
 
 # Celery settings
 # Check celery good practices: https://denibertovic.com/posts/celery-best-practices/

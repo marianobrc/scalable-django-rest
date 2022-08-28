@@ -17,12 +17,26 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter(trailing_slash=True)
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # JWT authentication using dj-rest-auth endpoints (login, logout, user details..)
+    # https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
+    path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
+
+    # All Business APIs are located at this root.
+    # http://localhost:8000/api/<router-viewsets>'
+    # Notice this is the router created above.
+    path("api/v1/", include(router.urls)),
+
+    # The DRF browsable API requires session authentication to work.
     path('api-auth/', include('rest_framework.urls')),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),  # Login / Logout / Signup using JWT
+
+    # Django Administration
+    path('admin/', admin.site.urls),
 
 ]
 
