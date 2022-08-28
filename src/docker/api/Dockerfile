@@ -12,14 +12,13 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
   # dependencies for building Python packages
   build-essential \
   # postgress client (psycopg2) dependencies
-  # libpq-dev \
-  curl \
+  libpq-dev \
+  python3-dev \
   # cleaning up unused files to reduce the image size
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 # Switch to the non-root user
 USER web
-RUN ls -alh
 # Install the poetry for python dependency management
 # https://python-poetry.org/docs/master/#installation
 ENV POETRY_VERSION=1.1.14
@@ -35,6 +34,9 @@ USER root
 # Copy entrypoint script which waits for the db to be ready
 COPY --chown=web:web ./docker/api/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+# Copy the scripts that starts the default worker
+COPY --chown=web:web ./docker/api/start-celery-worker.sh /usr/local/bin/start-celery-worker.sh
+RUN chmod +x /usr/local/bin/start-celery-worker.sh
 USER web
 # This script will run before every command executed in the container
 ENTRYPOINT ["entrypoint.sh"]
