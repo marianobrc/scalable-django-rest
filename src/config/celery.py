@@ -10,7 +10,7 @@ from celery import Celery
 
 
 # set the default Django settings module for the 'celery' program.
-#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "quickpay.settings.local")
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 print(f"Loading CELERY app with settings from {os.getenv('DJANGO_SETTINGS_MODULE')}")
 app = Celery("backend")
 
@@ -19,6 +19,6 @@ app = Celery("backend")
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 app.config_from_object("django.conf:settings", namespace="CELERY")
-#print(f"CELERY CONFIG:\n {app.conf.humanize(with_defaults=False, censored=True)}")
+# print(f"CELERY CONFIG:\n {app.conf.humanize(with_defaults=False, censored=True)}")
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()

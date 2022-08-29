@@ -26,22 +26,18 @@ urlpatterns = [
     # JWT authentication using dj-rest-auth endpoints (login, logout, user details..)
     # https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
     path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
-
     # All Business APIs are located at this root.
     # http://localhost:8000/api/<router-viewsets>'
     # Notice this is the router created above.
     path("api/v1/", include(router.urls)),
-
     # The DRF browsable API requires session authentication to work.
-    path('api-auth/', include('rest_framework.urls')),
-
+    path("api-auth/", include("rest_framework.urls")),
     # Django Administration
-    path('admin/', admin.site.urls),
-
+    path("admin/", admin.site.urls),
 ]
 
 if settings.DEBUG:
     urlpatterns.append(*staticfiles_urlpatterns())
     urlpatterns.append(
-        path(r'silk/', include('silk.urls', namespace='silk')),
+        path(r"silk/", include("silk.urls", namespace="silk")),
     )
