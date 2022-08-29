@@ -6,15 +6,15 @@ User = get_user_model()
 
 @pytest.fixture
 def test_password():
-    return 'test'
+    return "test"
 
 
 @pytest.fixture
 def create_user(db, django_user_model, test_password):
     def make_user(**kwargs):
-        kwargs['password'] = test_password
-        if 'email' not in kwargs:
-            kwargs['email'] = "user@test.com"
+        kwargs["password"] = test_password
+        if "email" not in kwargs:
+            kwargs["email"] = "user@test.com"
         return django_user_model.objects.create_user(**kwargs)
 
     return make_user
@@ -22,14 +22,19 @@ def create_user(db, django_user_model, test_password):
 
 @pytest.mark.django_db
 def test_user_create_minimal():
-    User.objects.create_user(email='lennon@thebeatles.com', password='johnpassword')
+    User.objects.create_user(email="lennon@thebeatles.com", password="johnpassword")
     assert User.objects.count() == 1
 
 
 @pytest.mark.django_db
 def test_superuser_create():
-    User.objects.create_superuser(email='admin@thebeatles.com', password='adminpassword')
-    assert User.objects.filter(is_staff=True, is_superuser=True, is_active=True).count() == 1
+    User.objects.create_superuser(
+        email="admin@thebeatles.com", password="adminpassword"
+    )
+    assert (
+        User.objects.filter(is_staff=True, is_superuser=True, is_active=True).count()
+        == 1
+    )
 
 
 @pytest.mark.django_db
