@@ -4,11 +4,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-@pytest.fixture
-def test_password():
-    return "test"
-
-
 @pytest.mark.django_db
 def test_user_create_minimal():
     User.objects.create_user(email="lennon@thebeatles.com", password="johnpassword")
