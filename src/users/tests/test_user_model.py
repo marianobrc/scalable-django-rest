@@ -9,17 +9,6 @@ def test_password():
     return "test"
 
 
-@pytest.fixture
-def create_user(db, django_user_model, test_password):
-    def make_user(**kwargs):
-        kwargs["password"] = test_password
-        if "email" not in kwargs:
-            kwargs["email"] = "user@test.com"
-        return django_user_model.objects.create_user(**kwargs)
-
-    return make_user
-
-
 @pytest.mark.django_db
 def test_user_create_minimal():
     User.objects.create_user(email="lennon@thebeatles.com", password="johnpassword")
