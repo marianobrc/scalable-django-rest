@@ -21,3 +21,20 @@ def test_login(create_user, api_client):
     assert response_data["user"]  # Not None, Not Empty
     assert response_data["user"]["pk"]  # Not None, Not Empty
     assert response_data["user"]["email"] == test_email
+
+
+@pytest.mark.django_db
+def test_logout(create_user, api_client):
+    test_email = "user@test.com"
+    test_password = "MyPassw0Rd123"
+    create_user(email=test_email, password=test_password)
+    login_data = {
+        "username": test_email,
+        "password": test_password,
+    }
+    login_url = reverse("rest_login")
+    response = api_client.post(login_url, data=login_data, format="json")
+    assert response.status_code == status.HTTP_200_OK
+    logout_url = reverse("rest_logout")
+    response = api_client.post(logout_url, format="json")
+    assert response.status_code == status.HTTP_200_OK
