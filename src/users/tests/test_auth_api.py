@@ -61,3 +61,14 @@ def test_jwt_verification_with_valid_token(create_user, api_client):
         token_verification_url, data={"token": access_token}, format="json"
     )
     assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_jwt_verification_with_wrong_token(create_user, api_client):
+    access_token = "not.a.token"
+    # Call the verification endpoint with a valid token
+    token_verification_url = reverse("token_verify")
+    response = api_client.post(
+        token_verification_url, data={"token": access_token}, format="json"
+    )
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
