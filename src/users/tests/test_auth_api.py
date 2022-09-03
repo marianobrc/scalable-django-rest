@@ -72,3 +72,33 @@ def test_jwt_verification_with_wrong_token(create_user, api_client):
         token_verification_url, data={"token": access_token}, format="json"
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_jwt_refresh(create_user, api_client):
+    test_email = "user@test.com"
+    test_password = "MyPassw0Rd123"
+    create_user(email=test_email, password=test_password)
+    # Login to get a valid token
+    login_data = {
+        "username": test_email,
+        "password": test_password,
+    }
+    login_url = reverse("rest_login")
+    response = api_client.post(login_url, data=login_data, format="json")
+    login_response_data = response.json()
+    refresh_token = login_response_data["refresh_token"]
+    assert response.status_code == status.HTTP_200_OK
+    # Call the refresh endpoint with a valid token
+    token_verification_url = reverse("token_refresh")
+    response = api_client.post(
+        token_verification_url, data={"refresh": refresh_token}, format="json"
+    )
+    assert response.status_code == status.HTTP_200_OK
+    # Check that we got a new access token
+    refresh_response_data = response.json()
+    assert "access" in refresh_response_data
+    assert refresh_response_data["access"] != login_response_data["access_token"]
+    assert "access_token_expiration" in refresh_response_data
+    # ToDo: Check is the expiration date is in the future?
+
