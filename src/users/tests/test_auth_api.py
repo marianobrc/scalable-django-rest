@@ -101,4 +101,3 @@ def test_jwt_refresh(create_user, api_client):
     assert refresh_response_data["access"] != login_response_data["access_token"]
     assert "access_token_expiration" in refresh_response_data
     # ToDo: Check is the expiration date is in the future?
-
