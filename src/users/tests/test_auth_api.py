@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 from django.urls import reverse
 from rest_framework import status
@@ -91,6 +92,7 @@ def test_jwt_refresh(create_user, api_client):
     assert response.status_code == status.HTTP_200_OK
     # Call the refresh endpoint with a valid token
     token_verification_url = reverse("token_refresh")
+    current_time = datetime.utcnow()
     response = api_client.post(
         token_verification_url, data={"refresh": refresh_token}, format="json"
     )
@@ -100,4 +102,8 @@ def test_jwt_refresh(create_user, api_client):
     assert "access" in refresh_response_data
     assert refresh_response_data["access"] != login_response_data["access_token"]
     assert "access_token_expiration" in refresh_response_data
-    # ToDo: Check is the expiration date is in the future?
+    # Check is the expiration date is in the future
+    expiration_time = datetime.strptime(
+        refresh_response_data["access_token_expiration"], "%Y-%m-%dT%H:%M:%S.%fZ"
+    )
+    assert expiration_time > current_time
