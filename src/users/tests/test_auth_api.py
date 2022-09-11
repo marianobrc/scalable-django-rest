@@ -107,3 +107,26 @@ def test_jwt_refresh(create_user, api_client):
         refresh_response_data["access_token_expiration"], "%Y-%m-%dT%H:%M:%S.%fZ"
     )
     assert expiration_time > current_time
+
+
+@pytest.mark.django_db
+def test_user_registration(api_client):
+    # Create a user
+    test_email = "user@test.com"
+    test_password = "MyPassw0Rd123"
+    signup_data = {
+        # "username": test_email,
+        "email": test_email,
+        "password1": test_password,
+        "password2": test_password,
+    }
+    user_registration_url = reverse("rest_register")
+    response = api_client.post(user_registration_url, data=signup_data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
+    response_data = response.json()
+    assert response_data["access_token"]  # Not None, Not Empty
+    assert response_data["refresh_token"]  # Not None, Not Empty
+    assert response_data["user"]  # Not None, Not Empty
+    assert response_data["user"]["pk"]  # Not None, Not Empty
+    assert response_data["user"]["email"] == test_email
+
