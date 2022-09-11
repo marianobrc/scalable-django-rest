@@ -26,6 +26,7 @@ urlpatterns = [
     # JWT authentication using dj-rest-auth endpoints (login, logout, user details..)
     # https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
     path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
+    path('api/v1/rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     # All Business APIs are located at this root.
     # http://localhost:8000/api/<router-viewsets>'
     # Notice this is the router created above.

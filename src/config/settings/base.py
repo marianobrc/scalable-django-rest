@@ -45,6 +45,11 @@ THIRD_PARTY_APPS = [
     "rest_framework",  # REST APIs
     "rest_framework.authtoken",  # API toaken Authentication
     "dj_rest_auth",  # Login / Logout using JWT
+    'django.contrib.sites',  # For user registration
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
     "silk",
 ]
 
@@ -195,6 +200,20 @@ REST_FRAMEWORK = {
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = "jwt-auth"
 JWT_AUTH_REFRESH_COOKIE = "jwt-refresh"
+# django-allauth
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # For django-allauth, to not use username field
+
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 # Celery settings
 # Check celery good practices: https://denibertovic.com/posts/celery-best-practices/
