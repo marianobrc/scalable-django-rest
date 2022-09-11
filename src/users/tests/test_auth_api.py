@@ -129,4 +129,3 @@ def test_user_registration(api_client):
     assert response_data["user"]  # Not None, Not Empty
     assert response_data["user"]["pk"]  # Not None, Not Empty
     assert response_data["user"]["email"] == test_email
-
