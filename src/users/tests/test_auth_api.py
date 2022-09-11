@@ -10,7 +10,7 @@ def test_login(create_user, api_client):
     test_password = "MyPassw0Rd123"
     create_user(email=test_email, password=test_password)
     login_data = {
-        "username": test_email,
+        "email": test_email,
         "password": test_password,
     }
     login_url = reverse("rest_login")
@@ -30,7 +30,7 @@ def test_logout(create_user, api_client):
     test_password = "MyPassw0Rd123"
     create_user(email=test_email, password=test_password)
     login_data = {
-        "username": test_email,
+        "email": test_email,
         "password": test_password,
     }
     login_url = reverse("rest_login")
@@ -48,7 +48,7 @@ def test_jwt_verification_with_valid_token(create_user, api_client):
     create_user(email=test_email, password=test_password)
     # Login to get a valid token
     login_data = {
-        "username": test_email,
+        "email": test_email,
         "password": test_password,
     }
     login_url = reverse("rest_login")
@@ -82,7 +82,7 @@ def test_jwt_refresh(create_user, api_client):
     create_user(email=test_email, password=test_password)
     # Login to get a valid token
     login_data = {
-        "username": test_email,
+        "email": test_email,
         "password": test_password,
     }
     login_url = reverse("rest_login")
