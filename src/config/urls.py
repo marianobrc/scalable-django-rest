@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework.routers import DefaultRouter
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 router = DefaultRouter(trailing_slash=True)
 
@@ -27,6 +28,16 @@ urlpatterns = [
     # https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
     path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
     path("api/v1/rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+    path(
+        "api/v1/rest-auth/password_reset/",
+        PasswordResetView.as_view(),
+        name="password_reset",
+    ),
+    path(
+        "api/v1/rest-auth/password_reset_confirm/<uidb64>/<token>/",
+        PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
     # All Business APIs are located at this root.
     # http://localhost:8000/api/<router-viewsets>'
     # Notice this is the router created above.
