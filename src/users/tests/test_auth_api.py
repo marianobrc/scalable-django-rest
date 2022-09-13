@@ -142,3 +142,5 @@ def test_password_reset(create_user, api_client):
     password_reset_url = reverse("password_reset")
     response = api_client.post(password_reset_url, data=login_data, format="json")
     assert response.status_code == status.HTTP_200_OK
+    response_data = response.json()
+    assert response_data["detail"] == "Password reset e-mail has been sent."
