@@ -12,7 +12,7 @@ from scalable_django_rest.external_secrets_stack import ExternalSecretsStack
 from scalable_django_rest.dns_route_to_alb_stack import DnsRouteToAlbStack
 
 
-class MyDjangoAppPipelineStage(Stage):
+class MyDjangoApiPipelineStage(Stage):
     def __init__(
         self,
         scope: Construct,
