@@ -59,9 +59,9 @@ class MyDjangoApiPipelineStack(Stack):
             self,
             "MyDjangoApiStaging",
             env=aws_env,  # AWS Account and Region
-            django_settings_module="app.settings.stage",
+            django_settings_module="config.settings.stage",
             django_debug=True,
-            domain_name="scalabledjango.com",
+            domain_name="api.scalabledjango.com",
             subdomain="stage",
             # Limit scaling in staging to reduce costs
             db_min_capacity=rds.AuroraCapacityUnit.ACU_2,
@@ -76,9 +76,9 @@ class MyDjangoApiPipelineStack(Stack):
             self,
             "MyDjangoApiProduction",
             env=aws_env,  # AWS Account and Region
-            django_settings_module="app.settings.prod",
+            django_settings_module="config.settings.prod",
             django_debug=False,
-            domain_name="scalabledjango.com",
+            domain_name="api.scalabledjango.com",
             db_auto_pause_minutes=0,  # Keep the database always up in production
             app_task_min_scaling_capacity=2,
             app_task_max_scaling_capacity=5,
