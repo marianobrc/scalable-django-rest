@@ -86,7 +86,6 @@ class MyDjangoApiPipelineStage(Stage):
             env=aws_env,  # AWS Account and Region
             vpc=self.network.vpc,
             ecs_cluster=self.network.ecs_cluster,
-            queue=self.queues.default_queue,
             env_vars=self.app_env_vars,
             secrets=self.secrets.app_secrets,
             task_cpu=256,
