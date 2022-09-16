@@ -18,7 +18,6 @@ class MyDjangoAPI(Stack):
         construct_id: str,
         vpc: ec2.Vpc,
         ecs_cluster: ecs.Cluster,
-        queue: sqs.Queue,
         env_vars: dict,
         secrets: dict,
         task_cpu: int = 256,
@@ -31,7 +30,6 @@ class MyDjangoAPI(Stack):
         super().__init__(scope, construct_id, **kwargs)
         self.vpc = vpc
         self.ecs_cluster = ecs_cluster
-        self.queue = queue
         self.env_vars = env_vars
         self.secrets = secrets
         self.task_cpu = task_cpu
