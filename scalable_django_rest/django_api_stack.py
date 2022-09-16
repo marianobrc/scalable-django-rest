@@ -65,7 +65,7 @@ class MyDjangoAPI(Stack):
             desired_count=self.task_desired_count,  # Default is 1
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset(
-                    directory="app/", file="docker/app/Dockerfile", target="prod"
+                    directory="src/", file="docker/api/Dockerfile", target="prod"
                 ),
                 container_name=self.container_name,
                 container_port=8000,
