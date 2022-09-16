@@ -11,7 +11,7 @@ from aws_cdk import (
 from constructs import Construct
 
 
-class ScalableDjangoRestStack(Stack):
+class MyDjangoAPI(Stack):
     def __init__(
         self,
         scope: Construct,

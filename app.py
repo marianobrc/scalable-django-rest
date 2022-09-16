@@ -3,7 +3,7 @@ import os
 
 import aws_cdk as cdk
 
-from scalable_django_rest.scalable_django_rest_stack import ScalableDjangoRestStack
+from scalable_django_rest.django_api_stack import ScalableDjangoRestStack
 
 
 app = cdk.App()

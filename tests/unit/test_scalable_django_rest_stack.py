@@ -1,7 +1,7 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
 
-from scalable_django_rest.scalable_django_rest_stack import ScalableDjangoRestStack
+from scalable_django_rest.django_api_stack import ScalableDjangoRestStack
 
 # example tests. To run these tests, uncomment this file along with the example
 # resource in scalable_django_rest/scalable_django_rest_stack.py
