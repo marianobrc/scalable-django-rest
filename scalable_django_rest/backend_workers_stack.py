@@ -4,7 +4,7 @@ from aws_cdk import (
     aws_ecs as ecs,
     aws_sqs as sqs,
     aws_ecs_patterns as ecs_patterns,
-    aws_applicationautoscaling as autoscaling
+    aws_applicationautoscaling as autoscaling,
 )
 from constructs import Construct
 
@@ -37,15 +37,18 @@ class BackendWorkersStack(Stack):
         self.task_max_scaling_capacity = task_max_scaling_capacity
         if scaling_steps:
             self.scaling_steps = [
-                autoscaling.ScalingInterval(**step)
-                for step in scaling_steps
+                autoscaling.ScalingInterval(**step) for step in scaling_steps
             ]
         else:
             self.scaling_steps = [
                 autoscaling.ScalingInterval(upper=0, change=-1),  # 0 msgs = 0 workers
                 autoscaling.ScalingInterval(lower=1, change=+1),  # 1 msg = 1 worker
-                autoscaling.ScalingInterval(lower=100, change=1),  # 100 msgs = 2 workers
-                autoscaling.ScalingInterval(lower=200, change=2)  # 200 msgs = 4 workers
+                autoscaling.ScalingInterval(
+                    lower=100, change=1
+                ),  # 100 msgs = 2 workers
+                autoscaling.ScalingInterval(
+                    lower=200, change=2
+                ),  # 200 msgs = 4 workers
             ]
         super().__init__(scope, construct_id, **kwargs)
 
