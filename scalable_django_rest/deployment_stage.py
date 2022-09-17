@@ -7,6 +7,8 @@ from aws_cdk import (
 from scalable_django_rest.network_stack import NetworkStack
 from scalable_django_rest.database_stack import DatabaseStack
 from scalable_django_rest.django_api_stack import MyDjangoAPI
+from scalable_django_rest.queues_stack import QueuesStack
+from scalable_django_rest.backend_workers_stack import BackendWorkersStack
 from scalable_django_rest.static_files_stack import StaticFilesStack
 from scalable_django_rest.external_secrets_stack import ExternalSecretsStack
 from scalable_django_rest.dns_route_to_alb_stack import DnsRouteToAlbStack
@@ -26,6 +28,9 @@ class MyDjangoApiPipelineStage(Stage):
         db_auto_pause_minutes: int = 0,
         app_task_min_scaling_capacity: int = 2,
         app_task_max_scaling_capacity: int = 4,
+        worker_task_min_scaling_capacity: int = 1,
+        worker_task_max_scaling_capacity: int = 4,
+        worker_scaling_steps: list = None,
         **kwargs,
     ):
 
@@ -39,6 +44,9 @@ class MyDjangoApiPipelineStage(Stage):
         self.db_auto_pause_minutes = db_auto_pause_minutes
         self.app_task_min_scaling_capacity = app_task_min_scaling_capacity
         self.app_task_max_scaling_capacity = app_task_max_scaling_capacity
+        self.worker_task_min_scaling_capacity = worker_task_min_scaling_capacity
+        self.worker_task_max_scaling_capacity = worker_task_max_scaling_capacity
+        self.worker_scaling_steps = worker_scaling_steps
         aws_env = kwargs.get("env")
         self.network = NetworkStack(
             self,
@@ -66,12 +74,19 @@ class MyDjangoApiPipelineStage(Stage):
                 else f"https://{self.domain_name}"
             ],
         )
+        self.queues = QueuesStack(
+            self,
+            "Queues",
+            env=aws_env,  # AWS Account and Region
+        )
         self.app_env_vars = {
             "DJANGO_SETTINGS_MODULE": self.django_settings_module,
             "DJANGO_DEBUG": str(self.django_debug),
             "AWS_ACCOUNT_ID": os.getenv("CDK_DEFAULT_ACCOUNT"),
             "AWS_STATIC_FILES_BUCKET_NAME": self.static_files.s3_bucket.bucket_name,
             "AWS_STATIC_FILES_CLOUDFRONT_URL": self.static_files.cloudfront_distro.distribution_domain_name,
+            "SQS_DEFAULT_QUEUE_URL": self.queues.default_queue.queue_url,
+            "CELERY_TASK_ALWAYS_EAGER": "False",
         }
         self.secrets = ExternalSecretsStack(
             self,
@@ -93,6 +108,21 @@ class MyDjangoApiPipelineStage(Stage):
             task_desired_count=self.app_task_min_scaling_capacity,
             task_min_scaling_capacity=self.app_task_min_scaling_capacity,
             task_max_scaling_capacity=self.app_task_max_scaling_capacity,
+        )
+        self.workers = BackendWorkersStack(
+            self,
+            "Workers",
+            env=aws_env,  # AWS Account and Region
+            vpc=self.network.vpc,
+            ecs_cluster=self.network.ecs_cluster,
+            queue=self.queues.default_queue,
+            env_vars=self.app_env_vars,
+            secrets=self.secrets.app_secrets,
+            task_cpu=256,
+            task_memory_mib=512,
+            task_min_scaling_capacity=self.worker_task_min_scaling_capacity,
+            task_max_scaling_capacity=self.worker_task_max_scaling_capacity,
+            scaling_steps=self.worker_scaling_steps,
         )
         # Route requests made in the domain to the ALB
         self.dns = DnsRouteToAlbStack(

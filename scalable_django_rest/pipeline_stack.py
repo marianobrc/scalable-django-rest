@@ -69,6 +69,10 @@ class MyDjangoApiPipelineStack(Stack):
             db_auto_pause_minutes=5,
             app_task_min_scaling_capacity=1,
             app_task_max_scaling_capacity=2,
+            worker_scaling_steps=[
+                {"upper": 0, "change": 0},  # 0 msgs = 1 workers
+                {"lower": 10, "change": +1},  # 10 msgs = 2 workers
+            ],
         )
         pipeline.add_stage(self.staging_env)
         # Deploy to production after manual approval
@@ -82,6 +86,12 @@ class MyDjangoApiPipelineStack(Stack):
             db_auto_pause_minutes=0,  # Keep the database always up in production
             app_task_min_scaling_capacity=2,
             app_task_max_scaling_capacity=5,
+            worker_scaling_steps=[
+                {"upper": 0, "change": 0},  # 0 msgs = 1 workers
+                {"lower": 100, "change": +1},  # > 100 msg = 2 worker
+                {"lower": 200, "change": +1},  # > 200 msgs = 3 workers
+                {"lower": 500, "change": +2},  # > 500 msgs = 5 workers
+            ],
         )
         pipeline.add_stage(
             self.production_env,
