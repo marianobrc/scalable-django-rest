@@ -61,8 +61,8 @@ class MyDjangoApiPipelineStack(Stack):
             env=aws_env,  # AWS Account and Region
             django_settings_module="config.settings.stage",
             django_debug=True,
-            domain_name="api.scalabledjango.com",
-            subdomain="stage",
+            domain_name="stage.scalabledjango.com",
+            subdomain="api",
             # Limit scaling in staging to reduce costs
             db_min_capacity=rds.AuroraCapacityUnit.ACU_2,
             db_max_capacity=rds.AuroraCapacityUnit.ACU_2,
