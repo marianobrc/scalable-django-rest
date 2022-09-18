@@ -17,13 +17,23 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import View
+from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 router = DefaultRouter(trailing_slash=True)
 
 
+# status endpoint for health checks
+class StatusView(View):
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({"status": "OK"}, status=200)
+
+
 urlpatterns = [
+    # Health checks endpoint called by the load balancer
+    path("status/", view=StatusView.as_view(), name="status"),
     # JWT authentication using dj-rest-auth endpoints (login, logout, user details..)
     # https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
     path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
