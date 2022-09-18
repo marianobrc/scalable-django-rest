@@ -60,6 +60,14 @@ class NetworkStack(Stack):
             open=True,
             private_dns_enabled=True,
         )
+        self.sqs_private_link = ec2.InterfaceVpcEndpoint(
+            self,
+            "SQSEndpoint",
+            vpc=self.vpc,
+            service=ec2.InterfaceVpcEndpointAwsService.SQS,
+            open=True,
+            private_dns_enabled=True,
+        )
         # Save useful info in SSM for later usage
         ssm.StringParameter(
             self,
