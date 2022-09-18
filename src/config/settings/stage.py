@@ -5,7 +5,7 @@ from .base import *
 DEBUG = strtobool(os.getenv("DJANGO_DEBUG", "False"))
 # Set to your Domain here
 ALLOWED_HOSTS = [
-    "stage.api.scalabledjango.com",
+    "api.stage.scalabledjango.com",
 ]
 # The ALB uses the IP while calling the health check endpoint
 if os.environ.get("AWS_EXECUTION_ENV"):
