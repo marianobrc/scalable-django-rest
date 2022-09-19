@@ -1,7 +1,7 @@
-# Scalable Django Apps
+# Scalable Django REST
 A sample project for REST APIs using Django & Django REST Framework, ready to be deployed in AWS with Docker and CDK.
 
-At the root of this repository you will find a CDK (v2) project. 
+At the root of this repository you will find a CDK (v2) project.
 
 You will find the Django project and more details about how to set up the development environment is inside the `src/` directory.
 
@@ -31,17 +31,17 @@ Other Stacks and stages are defined in `scalable_django_rest/`.
 - Node.js 10.13.0 or later
 
 - Install the aws client v2:
-  
+
   https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html
-  
+
 - Setup API Keys of an administrator user and set the region running:
-  
+
     `aws configure`
 
   CDK requires API KEYs with enough permissions to create and destroy resources in your AWS Account. Hence, it's recommended to create a user with `Administrator` role.
- 
+
 - Install the cdk client:
-  
+
     `npm install -g aws-cdk`
 
 ### Working with CDK
@@ -84,7 +84,7 @@ Parameters containing non-sensitive data are sotred in AWS System Manager Parame
 The required parameters are listed in `.parameters.template.json`.
 These parameters can be manually created from the AWS Console, or using the helper script `scripts/set_parameters.py`:
 ```shell
-(.venv) $ python ./scripts/set_parameters.py .parameters.json 
+(.venv) $ python ./scripts/set_parameters.py .parameters.json
 Settings parameters in AWS..
 ...  # Parameters or Errors will be printed out
 Finished.
@@ -98,7 +98,7 @@ These secrets can be manually created from the AWS Console, or using the helper 
 ```shell
 (.venv) $ cp .secrets.template.json .secrets.json
 # Replace the placeholders with your secret values
-(.venv) $ python ./scripts/set_parameters.py --secret .secrets.json 
+(.venv) $ python ./scripts/set_parameters.py --secret .secrets.json
 Settings parameters in AWS..
 ...  # Parameters or Errors will be printed out
 Finished.
